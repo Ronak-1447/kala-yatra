@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kala Yatra — An interactive journey through 5,000 years of Indian art history. Explore cave paintings, temple sculptures, miniature paintings, folk traditions, and modern masterpieces on an immersive map." />
+  <title>Kala Yatra — A Journey Through Indian Art</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="" />
+
+  <!-- Leaflet MarkerCluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+
+  <!-- Leaflet MarkerCluster JS -->
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+  <!-- App Entry Point (ES Module) -->
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+
+  <!-- ============================================================
+       Loading Overlay — shown while app initializes
+       ============================================================ -->
+  <div class="loading-overlay" id="loading">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Kala Yatra</div>
+    <div class="loading-sub">Loading the art of India…</div>
+  </div>
+
+  <!-- ============================================================
+       Main Application Container
+       ============================================================ -->
+  <div id="app">
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- ---- Top Controls Bar ---- -->
+    <div class="controls-bar">
+
+      <!-- App Branding -->
+      <div class="app-brand">
+        <div>
+          <h1>Kala Yatra</h1>
+          <div class="subtitle">A Journey Through Indian Art</div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" 
+               class="search-input" 
+               id="search-input"
+               placeholder="Search locations, art styles…" 
+               autocomplete="off" />
+        <div class="search-suggestions" id="search-suggestions"></div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="filter-pills">
+        <button class="filter-pill" data-category="ancient" id="filter-ancient">
+          <span class="pill-dot"></span> Ancient
+        </button>
+        <button class="filter-pill" data-category="medieval" id="filter-medieval">
+          <span class="pill-dot"></span> Medieval
+        </button>
+        <button class="filter-pill" data-category="miniature" id="filter-miniature">
+          <span class="pill-dot"></span> Miniature
+        </button>
+        <button class="filter-pill" data-category="folk" id="filter-folk">
+          <span class="pill-dot"></span> Folk & Tribal
+        </button>
+        <button class="filter-pill" data-category="colonial_modern" id="filter-colonial">
+          <span class="pill-dot"></span> Colonial/Modern
+        </button>
+        <button class="filter-pill" data-category="contemporary" id="filter-contemporary">
+          <span class="pill-dot"></span> Contemporary
+        </button>
+      </div>
+
+      <!-- Era Selector -->
+      <div style="position: relative;">
+        <button class="btn-era" id="btn-era">
+          <span class="btn-icon">⏳</span> Era
+        </button>
+        <div class="era-popover" id="era-popover">
+          <h3>Filter by Time Period</h3>
+          <div class="era-slider-container">
+            <div class="era-labels">
+              <span>30,000 BCE</span>
+              <span>2000 CE</span>
+            </div>
+            <input type="range" class="era-slider" id="era-slider" 
+                   min="0" max="1000" value="500" step="1" />
+            <div class="era-value" id="era-value">All Eras</div>
+            <button class="era-reset-btn" id="era-reset">Reset Filter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tour Mode Button -->
+      <button class="btn-tour" id="btn-tour">
+        <span class="btn-icon">▶</span> Tour
+      </button>
+
+    </div>
+
+    <!-- ============================================================
+         Detail Side Panel
+         ============================================================ -->
+    <div class="detail-panel" id="detail-panel">
+      <button class="panel-close" id="panel-close" aria-label="Close panel">✕</button>
+
+      <!-- Hero Section -->
+      <div class="panel-hero">
+        <div class="panel-hero-image"></div>
+        <div class="panel-hero-overlay">
+          <h2></h2>
+          <div class="panel-region"></div>
+        </div>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="panel-content">
+        <!-- Dynamically populated by panel.js -->
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Tour Mode Overlay
+         ============================================================ -->
+    <div class="tour-overlay" id="tour-overlay">
+      <div class="tour-header">
+        <h3>🎨 Guided Tour</h3>
+        <span class="tour-progress"></span>
+      </div>
+      <div class="tour-location-name"></div>
+      <div class="tour-narration"></div>
+      <div class="tour-controls">
+        <button class="tour-btn tour-prev">← Previous</button>
+        <button class="tour-btn tour-btn-primary tour-next">Next →</button>
+        <button class="tour-btn tour-details">📖 Details</button>
+        <button class="tour-btn tour-btn-exit tour-exit">✕ Exit</button>
+      </div>
+      <div class="tour-progress-bar">
+        <div class="tour-progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
