@@ -103,34 +103,17 @@ function initMap() {
     maxBoundsViscosity: 0.8
   });
 
-  // Primary tile layer: Stadia Alidade Smooth (warm, muted)
-  // Fallback to standard OSM if Stadia tiles fail
-  const stadiaLayer = L.tileLayer(
-    'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
+  // Primary tile layer: CartoDB Voyager (warm, clean, elegant for cultural/heritage maps, free with no API key needed)
+  const baseLayer = L.tileLayer(
+    'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
     {
-      attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
-      maxZoom: 20,
-      errorTileUrl: ''
-    }
-  );
-
-  const osmLayer = L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
       maxZoom: 19
     }
   );
 
-  // Try Stadia first, fall back to OSM
-  stadiaLayer.on('tileerror', () => {
-    if (!m.hasLayer(osmLayer)) {
-      m.removeLayer(stadiaLayer);
-      osmLayer.addTo(m);
-    }
-  });
-
-  stadiaLayer.addTo(m);
+  baseLayer.addTo(m);
 
   return m;
 }
